@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from "react"
 import Logo from "../../assest/Logo.png"
-
 export const navbarlinks = [
   {
     id: 1,
@@ -49,38 +48,120 @@ export const NavbarRedes = [
 ]
 
 const Navbar = () => {
+    const [isOpen, setIsOpen] = useState(false)
+    const toggleMenu = () => {
+        setIsOpen(!isOpen)
+    };
+    
+
   return (
     <nav>
-        <div>
-            <div>
-              <img src={Logo} 
-              alt='Logo del sitio'
-              className='w=[80px] h-[80px]'/>
-            </div>
+        <div className="flex justify-between place-items-center sm:px-12 sm:py-6 px-4 py-6">
+
+          {/*Logo navbar */}
 
             <div>
-              <ul>
+              <img src={Logo} 
+              alt="Logo del sitio"
+              className="w-[80px] h-[80px]"/>
+            </div>
+
+          {/* Botón de cerrar (X) */}
+        <button onClick={toggleMenu} className="md:hidden text-white">
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+        >
+          {isOpen ? (<path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+       />) : (<path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M4 6h16M4 12h16M4 18h16"
+        />) }
+          
+       
+          
+        </svg>
+        </button>
+
+
+          {/*Navegacion desktop */}
+            <div className="hidden md:block">
+              <ul className="flex sm:space-x-8 space-x-4">
                 {navbarlinks.map((link)=>(
                   <li key={link.id}>
-                    <a href={link.link}>{link.title}</a>
+                    <a 
+                    className='text-white sm:text-lg text-sm hover:text-sky-200 transition-transform hover:scale-110 transform inline-block duration-300'
+                    href={link.link}
+                    >
+                      {link.title}
+                      </a>
                   </li>
                 ))}
                 </ul>
             </div>
 
-            <div>
-              <ul>
+         {/*Navegacion redes desktop */}
+            <div className="hidden md:block">
+              <ul className="flex space-x-4">
               {NavbarRedes.map((link)=>(
                   <li key={link.id}>
-                    <a href={link.link}>
-                      {link.icon}
+                    <a
+                    target="_blank"
+                    rel="noopener noreferrer" 
+                     className='inline-block transition-transform duration-300 transform hover:scale-125'
+                    href={link.icon}
+                    >
+                      <i
+                        className={ `${link.icon} sm:text-2xl text-lg text-white hover:text-sky-200 transition-all duration-300 `}
+                      ></i>
                     </a>
                   </li>
                 ))}
                 </ul>
+           
+            
             </div>
-
         </div>
+
+        {/*Menu movil */} 
+        <div className={`md:hidden absolute w-full bg-purple-950 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+        <ul className='flex flex-col px-4 py-2'>
+            {navbarlinks.map((link)=>(
+              <li key={link.id} className="py-2 text-center">
+                <a 
+                className="text-white hover:text-sky-200"
+                href={link.link} 
+                onClick={()=>setIsOpen(false)}>
+                  {link.title}
+                  </a>
+              </li>
+            ))}
+            </ul>
+                <ul className='flex space-x-4 py-2 border-t border-r-purple-700 justify-center'>
+                  {NavbarRedes.map((link)=>(
+                      <li key={link.id}>
+                        <a
+                        target="_blank"
+                        rel="noopener noreferrer" 
+                        className=" inline-block"
+                        href={link.link} 
+                        onClick={()=>setIsOpen(false)}
+                        >
+                         <i   className={ `${link.icon} text-lg text-white hover:text-sky-200 `}
+                          ></i>
+                        </a>
+                      </li>
+                    ))}
+                    </ul>
+          </div>
     </nav>
 
   )
